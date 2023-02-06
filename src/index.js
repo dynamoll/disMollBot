@@ -8,6 +8,9 @@
 const systemValue = require('./common/systemValue.js');
 // 共通定数
 const commonConst = require('./common/commonConst.js');
+// ローカルデータ
+// ※サーバーIDチャンネルIDトークンを各自配置
+const localData = require('./common/localData.js');
 // guildMemberAddインスタンス
 const guildMemberAdd = require('./modules/guildMemberAdd.js');
 // messageCreateインスタンス
@@ -48,9 +51,9 @@ commonConst.client.on("guildMemberAdd", member => {
 
 // メッセージを編集したらイベント発生
 // まだ未完成
-commonConst.client.on('messageUpdate', ({ oldMessage, newMessage }) => {
-    console.log(newMessage);
-    console.log(oldMessage);
-})
+// commonConst.client.on('messageUpdate', ({ oldMessage, newMessage }) => {
+//     console.log(newMessage);
+//     console.log(oldMessage);
+// })
 
-commonConst.client.login(commonConst.discordBotToken);
+commonConst.client.login(localData.discordBotToken);
