@@ -62,7 +62,7 @@ exports.index = function(message){
             res.setEncoding("utf8");
             res.on('data', (res) => {
                 var data = JSON.parse(`${res}`);
-                console.log(data.results[0]);
+                console.log(data.results);
                 const stageEmbed1 = {
                     color: 0x0099ff,
                     title: data.results[0].stages[0].name,
@@ -98,6 +98,19 @@ exports.index = function(message){
         });
     }
 
+    // APIテスト
+    if (message.content.match(/api/)) {
+        var URL = "https://pokeapi.co/api/v2/pokemon/151/";
+        https.get(URL, (res) => {
+            res.setEncoding("utf8");
+            res.on('data', (res) => {
+                var data = `${res}`;
+                // var data = JSON.parse(`${res}`);
+                console.log(data);
+            });
+        });
+    }
+    
     // サンプル用のEmbed
     if (message.content.match(/sampleEmbed/)) {
         var URL = "https://spla3.yuu26.com/api/regular/now";
