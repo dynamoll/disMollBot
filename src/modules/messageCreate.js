@@ -15,7 +15,6 @@ const localData = require('../common/localData.js');
 // -- 定数 -- //
 const http = require("http");
 const https = require("https");
-const { EmbedBuilder } = require('discord.js');
 
 // -- 処理 -- //
 exports.index = function(message){
@@ -33,24 +32,14 @@ exports.index = function(message){
         message.channel.send(sendMessage);
     }
 
-    if (message.content.match(/デデドン/)) {
-        let channel = message.channel;
-        let author = message.author.username;
-        let reply_text = `なんだこいつぅぅう！！！！！！！！！！！！！`;
-        message.reply(reply_text)
-            .then(message => console.log(`Sent message: ${reply_text}`))
-            .catch(console.error);
-        return;
-    }
-
     // 天気APIを利用して天気を教えてくれる。
     if (message.content.match(/広島の天気は？/)) {
-        let location = "Hiroshima";
-        let APIKEY = "4e2f7908cd685f879abff54218c8c0cd";
-        let URL = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=" + APIKEY;
+        var location = "Hiroshima";
+        var APIKEY = "4e2f7908cd685f879abff54218c8c0cd";
+        var URL = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=" + APIKEY;
 
         http.get(URL, (res) => {
-            let body = "";
+            var body = "";
             res.setEncoding("utf8");
 
             res.on("data", (chunk) => {
@@ -68,49 +57,105 @@ exports.index = function(message){
     // splatoon3のステージ情報を教えてくれる。
     // 参考：https://spla3.yuu26.com/
     if (message.content.match(/spl/)) {
-        let URL = "https://spla3.yuu26.com/api/regular/now";
+        var URL = "https://spla3.yuu26.com/api/regular/now";
         https.get(URL, (res) => {
-            let body = "";
             res.setEncoding("utf8");
             res.on('data', (res) => {
-                let data = JSON.parse(`${res}`);
-                console.log(typeof(data));
+                var data = JSON.parse(`${res}`);
                 console.log(data.results[0]);
-                
-                const splEmbed = new EmbedBuilder()
-                    .setColor(0x0099FF)
-                    .setTitle(`【現在のレギュラーマッチ】`)
-                    .setThumbnail(`${data.results[0].stages[0].image}`)
-                    .addFields(
-                        { name: 'Regular field title', value: 'Some value here' },
-                        { name: '\u200B', value: '\u200B' },
-                        { name: 'Inline field title', value: 'Some value here', inline: true },
-                        { name: 'Inline field title', value: 'Some value here', inline: true },
-                    )
-                    .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
-                    .setImage(`${data.results[0].stages[0].image}`)
-                    .setImage(`${data.results[0].stages[1].image}`)
-                    .setTimestamp()
-                    .setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+                const stageEmbed1 = {
+                    color: 0x0099ff,
+                    title: data.results[0].stages[0].name,
+                    image: {
+                        url: data.results[0].stages[0].image,
+                    },
+                    timestamp: commonConst.date.toISOString(),
+                    footer: {
+                        text: `Splatoon3`,
+                        icon_url: 'https://i.imgur.com/AfFp7pu.png',
+                    },
+                };
+                const stageEmbed2 = {
+                    color: 0x0099ff,
+                    title: data.results[0].stages[1].name,
+                    image: {
+                        url: data.results[0].stages[1].image,
+                    },
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: `Splatoon3`,
+                        icon_url: 'https://i.imgur.com/AfFp7pu.png',
+                    },
+                };
+                var startTimeStamp = data.results[0].start_time;
+                var endTimeStamp = data.results[0].end_time;
+                var startTime = startTimeStamp.substring(11).slice(0, 5);
+                var endTime = endTimeStamp.substring(11).slice(0, 5);
+                message.channel.send(`現在のレギュラーマッチはこちら！\n(${startTime}～${endTime})`);
+                message.channel.send({ embeds: [stageEmbed1] });
+                message.channel.send({ embeds: [stageEmbed2] });
+            });
+        });
+    }
 
-                message.channel.send({ embeds: [splEmbed] });
-
-
-                // message.channel.send(`【現在のレギュラーマッチ】\n${data.results[0].stages[0].name}`);
-                // message.channel.send(`${data.results[0].stages[0].image}`);
-                // message.channel.send(`${data.results[0].stages[1].name}`);
-                // message.channel.send(`${data.results[0].stages[1].image}`);
+    // サンプル用のEmbed
+    if (message.content.match(/sampleEmbed/)) {
+        var URL = "https://spla3.yuu26.com/api/regular/now";
+        https.get(URL, (res) => {
+            res.setEncoding("utf8");
+            res.on('data', (res) => {
+                var data = JSON.parse(`${res}`);
+                console.log(data.results[0]);
+                const exampleEmbed = {
+                    color: 0x0099ff,
+                    title: 'Some title',
+                    url: 'https://discord.js.org',
+                    author: {
+                        name: 'Some name',
+                        icon_url: 'https://i.imgur.com/AfFp7pu.png',
+                        url: 'https://discord.js.org',
+                    },
+                    description: 'Some description here',
+                    thumbnail: {
+                        url: 'https://i.imgur.com/AfFp7pu.png',
+                    },
+                    fields: [
+                        {
+                            name: 'Regular field title',
+                            value: 'Some value here',
+                        },
+                        {
+                            name: '\u200b',
+                            value: '\u200b',
+                            inline: false,
+                        },
+                        {
+                            name: 'Inline field title',
+                            value: 'Some value here',
+                            inline: true,
+                        },
+                        {
+                            name: 'Inline field title',
+                            value: 'Some value here',
+                            inline: true,
+                        },
+                        {
+                            name: 'Inline field title',
+                            value: 'Some value here',
+                            inline: true,
+                        },
+                    ],
+                    image: {
+                        url: 'https://i.imgur.com/AfFp7pu.png',
+                    },
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: 'Some footer text here',
+                        icon_url: 'https://i.imgur.com/AfFp7pu.png',
+                    },
+                };
+                message.channel.send({ embeds: [exampleEmbed] });
             });
         });
     }
 };
-
-function formattedDateTime(date) {
-    var y = date.getFullYear();
-    var m = date.getMonth()+1;
-    var d = date.getDate();
-    var h = date.getHours();
-    var mi = date.getMinutes();
-  
-    return `${y}年${m}月${d}日 ${h} : ${mi}`;
-}

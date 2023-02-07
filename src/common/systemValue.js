@@ -17,5 +17,5 @@ function formattedDateTime(date) {
     var h = date.getHours();
     var mi = date.getMinutes();
   
-    return `${y}年${m}月${d}日 ${h} : ${mi}`;
+    return `${y}年${m}月${d}日 ${h}:${mi}`;
 }
