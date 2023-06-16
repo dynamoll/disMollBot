@@ -1,15 +1,19 @@
 # disMollBot
 
-## Description
-
 This is disMollBot!!
+スプラトゥーン3が大好きな人向けステージ情報を教えてくれるdiscord用のbotです。
+おまけに、サーバーを盛り上げてくれる機能もあります。
 
-## Installation
+## 構築方法
 
 ```
 $ git clone https://github.com/dynamoll/disMollBot.git
 ```
 
-## Author
+## 使用技術
+
+node.js
+
+## 作成者
 
 moll
