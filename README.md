@@ -9,6 +9,10 @@ This is disMollBot!!
 ## 構築方法
 
 ```
+nodeをインストールしてください。（インストール済の場合はスキップ）
+
+[Discord Developer Portal](https://discord.com/developers/applications)からbotを作成してください。
+
 $ git clone https://github.com/dynamoll/disMollBot.git
 
 localData.js にサーバーID、チャンネルID、DiscordBotトークンを入力してください。
