@@ -8,6 +8,8 @@ This is disMollBot!!
 
 ```
 $ git clone https://github.com/dynamoll/disMollBot.git
+
+localData.js にサーバーID、チャンネルID、DiscordBotトークンを入力してください。
 ```
 
 ## 使用技術
